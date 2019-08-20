@@ -18,3 +18,5 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/device', 'DevController@show')->name('device.register');
+Route::post('/device', 'DevController@store')->name('device.store');
