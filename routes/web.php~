@@ -20,17 +20,14 @@ Auth::routes();
 //shows the index of gateways and them attributes
 Route::any('/home', 'GatewayDataController@index')->name('home'); 
 
-//inserting a new record in the database
+//does the CRUD/create method inserting a new record in the database
 Route::any('/home/create', 'GatewayDataController@create')->name('create');
 Route::post('/home', 'GatewayDataController@insert')->name('insert');
 
-//deleting a record with {id} in the database
-Route::any('/home/delete/{id}', 'GatewayDataController@remove')->name('remove');
-Route::any('/home/deleted/{id}', 'GatewayDataController@delete')->name('delete');
-
-//modifying a record with {id} in the database
+//does the CRUD/update method modifying a record with {id} in the database
 Route::any('/home/edit/{id}', 'GatewayDataController@edit')->name('edit');
 Route::post('/home/{id}', 'GatewayDataController@update')->name('update');
 
-
-
+//does the CRUD/remove method deleting a record with {id} in the database
+Route::any('/home/delete/{id}', 'GatewayDataController@remove')->name('remove');
+Route::any('/home/deleted/{id}', 'GatewayDataController@delete')->name('delete');
