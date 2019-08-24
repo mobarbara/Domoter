@@ -33,4 +33,11 @@ Route::any('/home/edit/{id}', 'GatewayDataController@edit')->name('edit');
 Route::post('/home/{id}', 'GatewayDataController@update')->name('update');
 
 
-
+	
+	
+	
+	
+	
+	
+	
+	

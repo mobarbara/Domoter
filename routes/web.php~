@@ -17,17 +17,38 @@ Route::get('/', function () {
 
 Auth::routes();
 
+// Login Routes...
+Route::get('login', ['as' => 'login', 'uses' => 'Auth\LoginController@showLoginForm']);
+Route::post('login', ['as' => 'login.post', 'uses' => 'Auth\LoginController@login']);
+Route::post('logout', ['as' => 'logout', 'uses' => 'Auth\LoginController@logout']);
+
+// Password Reset Routes...
+Route::get('password/reset', ['as' => 'password.reset', 'uses' => 'Auth\ForgotPasswordController@showLinkRequestForm']);
+Route::post('password/email', ['as' => 'password.email', 'uses' => 'Auth\ForgotPasswordController@sendResetLinkEmail']);
+Route::get('password/reset/{token}', ['as' => 'password.reset.token', 'uses' => 'Auth\ResetPasswordController@showResetForm']);
+Route::post('password/reset', ['as' => 'password.reset.post', 'uses' => 'Auth\ResetPasswordController@reset']);
+
 //shows the index of gateways and them attributes
 Route::any('/home', 'GatewayDataController@index')->name('home'); 
 
-//does the CRUD/create method inserting a new record in the database
+//inserting a new record in the database
 Route::any('/home/create', 'GatewayDataController@create')->name('create');
 Route::post('/home', 'GatewayDataController@insert')->name('insert');
 
-//does the CRUD/update method modifying a record with {id} in the database
+//deleting a record with {id} in the database
+Route::any('/home/delete/{id}', 'GatewayDataController@remove')->name('remove');
+Route::any('/home/deleted/{id}', 'GatewayDataController@delete')->name('delete');
+
+//modifying a record with {id} in the database
 Route::any('/home/edit/{id}', 'GatewayDataController@edit')->name('edit');
 Route::post('/home/{id}', 'GatewayDataController@update')->name('update');
 
-//does the CRUD/remove method deleting a record with {id} in the database
-Route::any('/home/delete/{id}', 'GatewayDataController@remove')->name('remove');
-Route::any('/home/deleted/{id}', 'GatewayDataController@delete')->name('delete');
+
+	
+	
+	
+	
+	
+	
+	
+	

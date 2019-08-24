@@ -30,6 +30,11 @@ class RegisterController extends Controller
      */
     protected $redirectTo = '/home';
 
+	 public function getLastInsertedId() {
+		  $no_id = DB::table('users')->count();
+		  return $no_id; 
+	 }
+
     /**
      * Create a new controller instance.
      *
@@ -58,7 +63,10 @@ class RegisterController extends Controller
      * @return \App\User
      */
     protected function create(array $data)
-    {    	  
+    {
+    	  $id = RegisterController::getLastInsertedId();
+    	  $id++;    	  
+    	  
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],

@@ -14,7 +14,14 @@ class User extends Authenticatable
      * The attributes that are mass assignable.
      *
      * @var array
-     */      
+     */     
+     
+    public function is_admin () {
+		  if ($this->type = 'admin'){
+				 return true;
+		  }
+		  else return false;
+    } 
      
     protected $fillable = [
         'name', 'email', 'password', 'type'
