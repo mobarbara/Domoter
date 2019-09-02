@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
-
+use Illuminate\Auth\Events\Registered;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -16,3 +16,16 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::post('api/register', 'Auth\RegisterApiController@register');
+Route::post('api/login', 'Auth\LoginApiController@login');
+Route::post('api/logout', 'Auth\LoginApiController@logout');
+
+Route::group(['middleware' => 'auth:api'], function() {
+	Route::get('gateways', 'GatewayController@index');
+	Route::get('gateways/{gateway}', 'GatewayController@show');
+	Route::post('gateways', 'GatewayController@store');
+	Route::put('gateways/{gateway}', 'GatewayController@update');
+	Route::delete('gateways/{gateway}', 'GatewayController@delete');	
+});
+

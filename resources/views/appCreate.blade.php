@@ -5,11 +5,11 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header"> Add new gateway: </div>
+                <div class="card-header"> Add new app: </div>
 
 					 <div class="container">
 					 			<br>
-            			   <a class="btn btn-primary" href="{{ route('home')}}"> Go back to HOME </a>
+            			   <a class="btn btn-primary" href="{{url()->previous()}}"> Go back </a>
         			 </div>
 
                 <div class="card-body">
@@ -29,19 +29,27 @@
                         </ul>
                     </div>
                     @endif
-                    <form method="post" action="{{route('insert')}}">
+                    
+                    <form method="post" action="{{route('appInsert')}}">                 
                     <div class="form-group">
                           <input type="hidden" name="_token" id="csrf" value="{{Session::token()}}">
                           <label for="name">Name:</label>
                           <input type="text" class="form-control" id="name" placeholder="Enter Name" name="name">
                     </div>
                     <div class="form-group">
-                          <label for="topic">Topic:</label>
-                          <input type="text" class="form-control" id="topic" placeholder="Enter Topic" name="topic">
+                          <input type="hidden" name="_token" id="csrf" value="{{Session::token()}}">
+                          <label for="description">Description:</label>
+                          <input type="text" class="form-control" id="description" placeholder="Enter Description" name="description">
                     </div>
-                    
+                    <div class="form-group">
+                    		  <input type="hidden" name="_token" id="csrf" value="{{Session::token()}}">
+                          <label for="filter">Filter:</label>
+                          <input type="text" class="form-control" id="filter" placeholder="Enter Filter" name="filter">
+                    </div>
+
    					  <button type="submit" class="btn btn-primary" id="butsave">Submit</button>
                     </form>
+                    
                 </div>
             </div>
         </div>

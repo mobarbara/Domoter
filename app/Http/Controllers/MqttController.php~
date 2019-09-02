@@ -1,0 +1,78 @@
+<?php
+namespace App\Http\Controllers;
+use Illuminate\Http\Request;
+use DB;
+
+class MqttController extends Controller
+{
+	 public function index($id) //shows all apps
+	 {
+	 	  $gateway = DB::select('select * from gateways where id = ?', [$id]);
+	 	  $apps = DB::select('select * from apps where gat_id = ?' [$id]);
+		  return view('mqtt', ['apps' => $apps, 'gateway' => $gateway]);
+	 }
+	 
+	 public function create($id){ //when i have to display the view 'create'
+	 	  $gateway = DB::select('select * from gateways where id = ?', [$id]);
+		  return view('createapp', ['gateway' => $gateway]);	 
+	 }
+	 
+	 public function remove($id, $appid){ //when i have to display the view 'delete' for the gateway with id = $id
+	 	  $gateway = DB::select('select * from gateways where id = ?', [$id]);
+	 	  $apps = DB::select('select * from apps where id = ?', [$appid]);
+		  return view ('deleteapp', ['apps' => $apps, 'gateway' => $gateway]);	 
+	 }
+	 
+	 public function getLastInsertedId() {
+		  $no_id = DB::table('apps')->count();
+		  return $no_id; 
+	 }
+	 
+	 public function edit($id, $appid){ //when i have to display the view 'edit' for the gateway with id = $id
+	 	  $gateway = DB::select('select * from gateways where id = ?', [$id]);
+		  $apps = DB::select('select * from apps where id = ?', [$appid]);
+		  return view('editapp', ['apps' => $apps, 'gateway' => $gateway]);	 
+	 }
+	 
+	 public function insert(Request $request, $gatId){ //when i have to insert a new record in the table 'apps'
+		  	 
+		  	 $gatId = $request['gat_id'];
+		  	 $name = $request['name'];  
+		  	 $description = $request['description'];
+		  	 $filter = $request['filter'];
+		  	 $id = MqttController::getLastInsertedId();
+		  	 $id++;
+		  	 $data = array('id' => $id, 'gat_id' => $gatId, 'name' => $name, 'description' => $description, 'filter' => $filter);
+		  	 DB::table('apps')->insert($data);
+			 
+			 $url = "/home/mqtt/";
+        	 $style = "font-family: Nunito,sans-serif;"; 
+          echo "App created successfully. Go back to mqtt home <a href=" . $url . $gatId . " style=" . $style . "> here </a>";		  	 
+	 }	 
+	 
+	 public function delete(Request $request, $id, $appid){
+		  DB::delete('delete from apps where id = ?', [$appid]);  
+		  $url = "/home/mqtt/";
+        $style = "font-family: Nunito,sans-serif;"; 
+        echo "App deleted successfully. Go back to mqtt home <a href=" . $url . $id . " style=" . $style . "> here </a>";
+	 }  
+	 
+	 public function update(Request $request, $id, $appid) //when i have to edit a record in the table 'gateways' with id = $id
+    {
+    	  $id = $request['gat_id'];
+        $name = $request['name'];
+		  $description = $request['description'];
+        $filter = $request['filter'];
+        DB::update('update apps set name = ?, gat_id = ?, description = ?, filter = ? where id = ?', [$name,$id,$description,$filter,$appid]);
+        
+        $url = "/home/mqtt/";
+        $style = "font-family: Nunito,sans-serif;"; 
+        echo "App updated successfully. Go back to mqtt home <a href=" . $url . $id . " style=" . $style . "> here </a>";
+    }
+    
+}
+
+
+
+
+

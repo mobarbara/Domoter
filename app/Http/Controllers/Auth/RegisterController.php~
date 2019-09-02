@@ -7,6 +7,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Http\Request;
+use Illuminate\Auth\Events\Registered;
 
 class RegisterController extends Controller
 {
@@ -29,11 +31,6 @@ class RegisterController extends Controller
      * @var string
      */
     protected $redirectTo = '/home';
-
-	 public function getLastInsertedId() {
-		  $no_id = DB::table('users')->count();
-		  return $no_id; 
-	 }
 
     /**
      * Create a new controller instance.
@@ -63,15 +60,41 @@ class RegisterController extends Controller
      * @return \App\User
      */
     protected function create(array $data)
-    {
-    	  $id = RegisterController::getLastInsertedId();
-    	  $id++;    	  
-    	  
+    {    	  
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
             'type' => $data['type'],
         ]);
+    }
+    
+        
+    public function register(Request $request)
+    {
+        //valido la richiesta di registrazione
+        $this->validator($request->all())->validate();
+
+        //triggera observers a seguito della registrazione
+        event(new Registered($user = $this->create($request->all())));
+
+        //avviene il login
+        $this->guard()->login($user);
+
+        // And finally this is the hook that we want. If there is no
+        // registered() method or it returns null, redirect him to
+        // some other URL. In our case, we just need to implement
+        // that method to return the correct response.
+        
+        return $this->registered($request, $user)
+                        ?: redirect($this->redirectPath());
+    }
+    
+    protected function registered(Request $request, $user)
+    {
+    	  
+        $user->generateToken();
+
+        return response()->json(['data' => $user->toArray()], 201);
     }
 }

@@ -9,7 +9,7 @@
 
 					 <div class="container">
 					 			<br>
-            			   <a class="btn btn-primary" href="{{route('home')}}"> Go back to HOME </a>
+            			   <a class="btn btn-primary" href="/app"> Go back </a>
         			 </div>
 
                 <div class="card-body">
@@ -29,19 +29,27 @@
                         </ul>
                     </div>
                     @endif
-                    <form method="post" action="{{route('update', $gateways[0]->id)}}">
+                    @foreach($app as $a)
+                    <form method="post" action="/app/updated/{{$app->id}}">
                     <div class="form-group">
                           <input type="hidden" name="_token" id="csrf" value="{{Session::token()}}">
                           <label for="name">Name:</label> 
-                          <input type="text" class="form-control" id="name" placeholder="Enter Name" value="{{$gateways[0]->name}}" name="name">
+                          <input type="text" class="form-control" id="name" placeholder="Enter Name" value="{{$app->name}}" name="name">
                     </div>
                     <div class="form-group">
-                          <label for="topic">Topic:</label>
-                          <input type="text" class="form-control" id="topic" placeholder="Enter Topic" value="{{$gateways[0]->topic}}" name="topic">
+                          <input type="hidden" name="_token" id="csrf" value="{{Session::token()}}">
+                          <label for="description">Description:</label> 
+                          <input type="text" class="form-control" id="description" placeholder="Enter Description" value="{{$app->description}}" name="description">
+                    </div>
+                    <div class="form-group">
+                    		  <input type="hidden" name="_token" id="csrf" value="{{Session::token()}}">
+                          <label for="filter">Filter:</label>
+                          <input type="text" class="form-control" id="filter" placeholder="Enter Filter" value="{{$app->filter}}" name="filter">
                     </div>
 
    					  <button type="submit" class="btn btn-primary" id="butsave">Submit</button>
                     </form>
+                    @endforeach
                 </div>
             </div>
         </div>

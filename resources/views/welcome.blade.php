@@ -12,7 +12,10 @@
         <!-- Styles -->
         <style>
             html, body {
-                background-color: #fff;
+                background-image: url("domotic circles.png");
+                background-repeat: no-repeat;
+                background-position: center;
+                background-size: 250px 230px;
                 color: #636b6f;
                 font-family: 'Nunito', sans-serif;
                 font-weight: 200;
@@ -76,10 +79,20 @@
                 </div>
             @endif
 
+				
             <div class="content">
+            	<br>
+					<br>
+					<br>
+					<br>
                 <div class="title m-b-md">
                     Domoter
                 </div>
+                <br>
+                <br>
+                <div class="links">
+                 A web platform to manage domotic devices
+            	 </div>
             </div>
         </div>
     </body>

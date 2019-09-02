@@ -9,7 +9,7 @@
                 <div class="card-header">{{ __('Register') }}</div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{url('/home')}}">
+                    <form method="POST" action="{{route('registered')}}">
 
 
                         <div class="form-group row">

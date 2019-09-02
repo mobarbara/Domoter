@@ -6,23 +6,9 @@ use Illuminate\Http\Request;
 
 class GatewayDataController extends Controller
 {
-	 public function index(){ //shows gateways in the view 'home'
-	 	  $gateways = DB::select('select * from gateways');
-		  return view('home', ['gateways' => $gateways]);
-	 }
-
-	 public function create(){ //when i have to display the view 'create'
-		  return view('create');	 
-	 }
-	
-	 public function edit($id){ //when i have to display the view 'edit' for the gateway with id = $id
-		  $gateways = DB::select('select * from gateways where id = ?', [$id]);
-		  return view('edit', ['gateways' => $gateways]);	 
-	 }
-	 
-	 public function remove($id){ //when i have to display the view 'delete' for the gateway with id = $id
-	 	  $gateways = DB::select('select * from gateways where id = ?', [$id]);
-		  return view ('delete', ['gateways' => $gateways]);	 
+	 public function index($app_id){
+	 	  $gateways = DB::select('select * from gateways where app_id = ?', [$app_id]);
+		  return view('gatewayIndex', ['gateways' => $gateways]);
 	 }
 	 
 	 public function getLastInsertedId() {
@@ -30,33 +16,56 @@ class GatewayDataController extends Controller
 		  return $no_id; 
 	 }
 	 
-	 public function insert(Request $request){ //when i have to insert a new record in the table 'gateways'
-		  	 
-		  	 $name = $request['name'];           //with incremented id
-		  	 $topic = $request['topic'];
-		  	 $id = GatewayDataController::getLastInsertedId();
-		  	 $id++;
-		  	 $data = array('id' => $id,'name' => $name, 'topic' => $topic);
-		  	 DB::table('gateways')->insert($data);
-		  	 $gateways = DB::select('select * from gateways');
-		  	 return view('home', ['gateways' => $gateways]);
+	 public function create(){
+		  return view('gatewayCreate');
 	 }
 	 
-    public function update(Request $request, $id) //when i have to edit a record in the table 'gateways' with id = $id
+	 public function edit($id){
+	 	
+	 	  $gateway = DB::select('select * from gateways where id = ?', [$id]);
+		  return view('gatewayEdit', ['gateway' => $gateway]);
+	 }	 
+	 
+	 public function remove($id){
+	 	
+	 	  $gateway = DB::select('select * from gateways where id = ?', [$id]);
+		  return view('gatewayDelete', ['gateway' => $gateway]);	 
+	 }	 
+	 
+	 public function insert(Request $request){ 
+		  	 
+		  	 $app_id = $request['app_id'];           
+		  	 $mqtt_server = $request['mqtt_server'];
+		  	 $mqtt_port = $request['mqtt_port'];
+		  	 $mqtt_username = $request['mqtt_username'];
+		  	 $mqtt_password = $request['mqtt_password'];
+		  	 $id = GatewayDataController::getLastInsertedId();
+		  	 $id++;
+		  	 $data = array('id' => $id,'app_id' => $app_id, 'mqtt_server' => $mqtt_server, 
+		  	 'mqtt_port' => $mqtt_port, 'mqtt_username' => $mqtt_username, 'mqtt_password' => $mqtt_password);
+		  	 DB::table('gateways')->insert($data);
+			 
+			 $url = "/app";
+          echo "Record inserted successfully. Return to <a href=" . $url . "/" . $app_id . "/gateway" . ">gateway</a>.";    	 
+	 }
+	 
+    public function update(Request $request, $id)
     {
-        $name = $request['name'];
-        $topic = $request['topic'];
-        DB::update('update gateways set name = ?, topic = ? where id = ?', [$name,$topic,$id]);
-        
-        $url = "/home";
-        $style = "font-family: Nunito,sans-serif;"; 
-        echo "Record updated successfully. Go back home <a href=" . $url . " style=" . $style . "> here </a>";
+    	  $app_id = $request['app_id'];
+        $mqtt_server = $request['mqtt_server'];
+		  $mqtt_port = $request['mqtt_port'];
+		  $mqtt_username = $request['mqtt_username'];
+		  $mqtt_password = $request['mqtt_password'];
+        DB::update('update gateways set mqtt_server = ?, mqtt_port = ?, mqtt_username = ?, mqtt_password = ? where id = ?', [$mqtt_server,$mqtt_port,$mqtt_username,$mqtt_password,$id]);           
+        $url = "/app";
+        echo "Record updated successfully. Return to <a href=" . $url . "/" . $app_id . "/gateway" . ">gateway</a>.";        
     }
     
-	 public function delete(Request $request, $id){
-		  DB::delete('delete from gateways where id = ?', [$id]);  
-		  $url = "/home";
-        $style = "font-family: Nunito,sans-serif;"; 
-        echo "Record deleted successfully. Go back home <a href=" . $url . " style=" . $style . "> here </a>";
-	 }       
+	 public function delete(Request $request, $id){ 
+	 	  $app_id = DB::table('gateways')->select('app_id')->where('id', $id)->value('app_id');
+	 	  DB::delete('delete from gateways where id = ?', [$id]);
+		  $url = "/app";
+        echo "Record deleted successfully. Return to <a href=" . $url . "/" . $app_id . "/gateway" . ">gateway</a>."; 
+		  
+	 }     
 }

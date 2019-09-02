@@ -165,7 +165,7 @@ return [
         /*
          * Package Service Providers...
          */
-
+		  //Salman\Mqtt\MqttServiceProvider::class,
         /*
          * Application Service Providers...
          */
@@ -174,7 +174,6 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-
     ],
 
     /*

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateGatewaysTable extends Migration
+class CreateDevicesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,10 @@ class CreateGatewaysTable extends Migration
      */
     public function up()
     {
-        Schema::create('gateways', function (Blueprint $table) {
+        Schema::create('devices', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('name');
-            $table->text('topic');
+            $table->string('topic');
+            $table->integer('gateway_id');
             $table->timestamps();
         });
     }
@@ -28,6 +28,6 @@ class CreateGatewaysTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('gateways');
+        Schema::dropIfExists('devices');
     }
 }
