@@ -6,20 +6,14 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class GatewayDataController extends Controller
-{	
-
-	 public function get_data(){
-		  $date = Carbon::now()->toDateTimeString();
-		  return $date;
-	 }
-	
+{		
 	 public function index(){
 	 	  $gateways = DB::select('select * from gateways');
 		  return view('gatewayIndex', ['gateways' => $gateways]);
 	 }
 	 
-	 public function info($id){
-		  $gateways = DB::select('select * from gateways where id = ?', [$id]);	
+	 public function info($name){
+		  $gateways = DB::select('select * from gateways where name = ?', [$name]);	
 		  return view('gatewayInfo', ['gateways' => $gateways]);
 	 }	 
 	 
@@ -49,7 +43,7 @@ class GatewayDataController extends Controller
 		  	 $mqtt_server = $request['mqtt_server'];
 		  	 $mqtt_port = $request['mqtt_port'];
 		  	 $online = false;
-		  	 $last_alive = GatewayDataController::get_data();
+		  	 $last_alive = 0;
 		  	 $id = GatewayDataController::getLastInsertedId();
 		  	 $id++;
 		  	 $data = array('id' => $id, 'name' => $name, 'mqtt_server' => $mqtt_server, 
@@ -57,22 +51,7 @@ class GatewayDataController extends Controller
 		  	 DB::table('gateways')->insert($data);
 			 $view = GatewayDataController::index();
           echo $view; 	 
-	 }
-	 
-    public function update_last_alive($id)
-    {
-		  $last_alive = GatewayDataController::get_data();
-        DB::update('update gateways set last_alive = ? where id = ?', [$last_alive,$id]);           
-    	  $view = GatewayDataController::index();
-        echo $view; 
-    }
-
-	 public function update_online(Request $request, $id){
-	 	  $online = $request['online'];
-	 	  DB::update('update gateways set online = ? where id = ?', [$online,$id]); 
-	 	  $view = GatewayDataController::index();
-        echo $view; 
-	 }    
+	 }  
 	 
 	 public function update(Request $request, $id) 
     {

@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Auth\Events\Registered;
+use App\Device;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -29,5 +30,5 @@ Route::group(['middleware' => 'auth:api'], function() {
 	Route::delete('/api/gateways/{gateway}', 'GatewayController@delete');	
 });
 
-
+Route::post('/activate/{id}', 'DeviceDataController@activate');
 

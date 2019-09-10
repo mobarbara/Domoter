@@ -9,7 +9,11 @@ class DeviceDataController extends Controller
     public function index($name){
 	 	  $devices = DB::select('select * from devices where app_name = ?', [$name]);
 	 	  $app = DB::select('select * from apps where name = ?', [$name]);
-		  return view('devIndex', ['devices' => $devices, 'app' => $app]);
+	 	  $messages = DB::select('select * from messages');
+	 	  $gateways = DB::select('select * from gateways');
+	 	  $device_profiles = DB::select('select * from device_profiles');
+		  return view('devIndex', ['devices' => $devices, 'app' => $app, 'messages' => $messages,
+		  'gateways' => $gateways, 'device_profiles' => $device_profiles]);
 	 }
 	 
 	 public function getAppName($id){
@@ -73,18 +77,15 @@ class DeviceDataController extends Controller
 		  return view('devIndex', ['devices' => $devices, 'app' => $app]);      
     }
     
-    public function activate(Request $request, $id){
+    public function activate(Request $request){
+    	$id = $request['id'];
     	$token_activate = DB::select('select token_activate from devices where id = ?', [$id]);
     	if($request['token_activate'] == $token_activate){
     		$token_auth = DeviceDataController::generateAuthToken();
     		DB::update('update devices set token_auth = ? where id = ?', [$token_auth,$id]);
-    		$mqtt_message = $token;
-    		$device = DB::select('select * from devices where id = ?', [$id]);
-    		//$json = array('');
+    		return response()->json(['token_auth' => $token_auth],200);
       }
-      else{
-      	//$json = array('');
-      }
+      return response()->json(null,404);
     }
     
 	 public function delete($name, $id){ 

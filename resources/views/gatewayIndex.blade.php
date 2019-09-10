@@ -22,10 +22,10 @@
   		<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
   		<!-- Custom styles for this template -->
   		<link href="css/simple-sidebar.css" rel="stylesheet">
-
+    <script src = "https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js" type ="text/javascript"></script>	 
+	 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-
 </head>
 <body>
     <div id="app">
@@ -109,21 +109,13 @@
       <div class="table-responsive">
       <table class="table"> 
       <tr>
-      	<th> Name </th> 
-      	<th> Last Time Alive </th>
-      	<th> Status </th>
+      	<th> Name </th>
       	<th> Edit </th>
      	 	<th> Delete </th>
       </tr>
       @foreach ($gateways as $gateway)
       <tr>
       	<td><a href="/gateways/{{$gateway->name}}/info">{{$gateway->name}}</a></td>
-      	<td>{{$gateway->last_alive}}</td>
-      	@if($gateway->online == false)
-      	<td><span style="color:red">Offline</span></td>
-      	@elseif($gateway->online == true)
-      	<td><span style="color:green">Online</span></td>
-      	@endif
       	<td><a href="/gateways/edit/{{$gateway->id}}"><button> Edit GTW </button></a></td>
       	<td><a href="/gateways/delete/{{$gateway->id}}"><button> Delete GTW </button></a></td>
       </tr>
