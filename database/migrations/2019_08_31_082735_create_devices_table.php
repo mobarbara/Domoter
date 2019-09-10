@@ -15,8 +15,11 @@ class CreateDevicesTable extends Migration
     {
         Schema::create('devices', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('topic');
-            $table->integer('gateway_id');
+            $table->string('name');
+            $table->string('app_name');
+            $table->string('token_auth');
+            $table->string('token_activate');
+            $table->boolean('is_active');
             $table->timestamps();
         });
     }

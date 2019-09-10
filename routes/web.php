@@ -37,56 +37,66 @@ Route::get('email/resend', 'Auth\VerificationController@resend')->name('verifica
 
 //Auth::routes();
 
-//HOME
+//HOME & USERS
 Route::any('/home', 'HomeController@index')->name('home');
 
+Route::any('/users', 'UsersController@index')->name('userIndex');
+
+Route::any('/users/delete/{id}', 'UsersController@remove')->name('userRemove');
+Route::any('/users/{id}', 'UsersController@delete')->name('userDelete');
+
+
 //GATEWAYS
-//list gateways
-Route::get('/app/{app_id}/gateway', 'GatewayDataController@index')->name('gatewayIndex');
+Route::any('/gateways', 'GatewayDataController@index')->name('gatewayIndex');
 
-//insert new gateway
-Route::any('/add/gateway', 'GatewayDataController@create')->name('gatewayCreate');
-Route::post('/gateway/inserted', 'GatewayDataController@insert')->name('gatewayInsert');
+Route::any('/addGateway', 'GatewayDataController@create')->name('gatewayCreate');
+Route::post('/gateways/inserted', 'GatewayDataController@insert')->name('gatewayInsert');
 
-//update a gateway
-Route::any('/gateway/edit/{id}', 'GatewayDataController@edit')->name('gatewayEdit');
-Route::post('/gateway/edited/{id}', 'GatewayDataController@update')->name('gatewayUpdate');
+Route::any('/gateways/delete/{id}', 'GatewayDataController@remove')->name('gatewayRemove');
+Route::any('/gateways/{id}', 'GatewayDataController@delete')->name('gatewayDelete');
 
-//delete a gateway
-Route::any('/gateway/delete/{id}', 'GatewayDataController@remove')->name('gatewayRemove');
-Route::any('/gateway/deleted/{id}', 'GatewayDataController@delete')->name('gatewayDelete');
+Route::get('/gateways/edit/{id}', 'GatewayDataController@edit')->name('gatewayEdit');
+Route::post('/gateways/edited/{id}', 'GatewayDataController@update')->name('gatewayUpdate');
 
-//DEVICES
-//list devices
-Route::get('/app/gateway/{id}/device', 'DeviceDataController@index')->name('deviceIndex');
-
-//insert new device
-Route::any('/add/device', 'DeviceDataController@create')->name('deviceCreate');
-Route::post('/device/inserted', 'DeviceDataController@insert')->name('deviceInsert');
-
-//update a device
-Route::any('/device/edit/{id}', 'DeviceDataController@edit')->name('deviceEdit');
-Route::post('/device/edited/{id}', 'DeviceDataController@update')->name('deviceUpdate');
-
-//delete a device
-Route::any('/device/delete/{id}', 'DeviceDataController@remove')->name('deviceRemove');
-Route::post('/device/deleted/{id}', 'DeviceDataController@delete')->name('deviceDelete');
+Route::any('/gateways/{name}/info', 'GatewayDataController@info')->name('gatewayInfo');
 
 //APPS
-//list apps
-Route::get('/app', 'AppDataController@index')->name('appIndex');
+Route::any('/applications', 'AppDataController@index')->name('appIndex');
 
-//insert new app
-Route::any('/add/app', 'AppDataController@create')->name('appCreate');
-Route::post('/app/inserted', 'AppDataController@insert')->name('appInsert');
+Route::any('/addApp', 'AppDataController@create')->name('appCreate');
+Route::post('/applications/inserted', 'AppDataController@insert');
 
-//update a app
-Route::get('/app/edit/{id}', 'AppDataController@edit')->name('appEdit');
-Route::post('/app/updated/{id}', 'AppDataController@update');
+Route::get('/applications/edit/{id}', 'AppDataController@edit')->name('appEdit');
+Route::post('/applications/edited/{id}', 'AppDataController@update')->name('appUpdate');
 
-//delete a app
-Route::any('/app/delete/{id}', 'AppDataController@remove')->name('appRemove');
-Route::any('/app/deleted/{id}', 'AppDataController@delete');
+Route::any('/applications/delete/{id}', 'AppDataController@remove')->name('appRemove');
+Route::any('/applications/{id}', 'AppDataController@delete')->name('appDelete');
+
+Route::any('/applications/{name}/info', 'AppDataController@info')->name('appInfo');
+
+//DEVICE-PROFILE
+Route::any('/deviceProfiles', 'DeviceProfileDataController@index')->name('deviceProfile');
+
+Route::any('/addDeviceProfile', 'DeviceProfileDataController@create')->name('devProfileCreate');
+Route::post('/deviceProfiles/inserted', 'DeviceProfileDataController@store')->name('devProfileInsert');
+
+Route::get('/deviceProfiles/edit/{id}', 'DeviceProfileDataController@edit')->name('devProfileEdit');
+Route::post('/deviceProfiles/edited/{id}', 'DeviceProfileDataController@update')->name('devProfileUpdate');
+
+Route::any('/deviceProfiles/delete/{id}', 'DeviceProfileDataController@remove')->name('devProfileRemove');
+Route::any('/deviceProfiles/{id}', 'DeviceProfileDataController@delete')->name('devProfileDelete');
+
+//DEVICE
+Route::any('/applications/{name}/devices', 'DeviceDataController@index')->name('devIndex');
+
+Route::any('/applications/{name}/addDevice', 'DeviceDataController@create')->name('devCreate');
+Route::post('/applications/{name}/device/inserted', 'DeviceDataController@insert')->name('devInsert');
+
+Route::get('/devices/edit/{id}', 'DeviceDataController@edit')->name('devEdit');
+Route::post('/applications/{name}/devices/edited/{id}', 'DeviceDataController@update')->name('devUpdate');
+
+Route::any('/devices/delete/{id}', 'DeviceDataController@remove')->name('devRemove');
+Route::any('/applications/{name}/devices/deleted/{id}', 'DeviceDataController@delete')->name('devDelete');
 
 
 	

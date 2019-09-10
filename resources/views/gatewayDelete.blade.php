@@ -17,7 +17,7 @@
                <div class="container">
                     <p> Are you really sure you want to delete this gateway and its entry in the database? </p>
                     <a class="btn btn-primary" href="{{url()->previous()}}"> Go back </a>
-                    <a class="btn btn-primary" href="/gateway/deleted/{{$g->id}}"> Yes, I am sure </a>
+                    <a class="btn btn-primary" href="/gateways/{{$g->id}}"> Yes, I am sure </a>
                </div>
                @endforeach
             </div>

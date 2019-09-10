@@ -9,7 +9,7 @@
 
 					 <div class="container">
 					 			<br>
-            			   <a class="btn btn-primary" href="{{url()->previous()}}"> Go back </a>
+            			   <a class="btn btn-primary" href="/applications"> Go back </a>
         			 </div>
 
                 <div class="card-body">
@@ -30,7 +30,7 @@
                     </div>
                     @endif
                     
-                    <form method="post" action="{{route('appInsert')}}">                 
+                    <form method="post" action="/applications/inserted">                 
                     <div class="form-group">
                           <input type="hidden" name="_token" id="csrf" value="{{Session::token()}}">
                           <label for="name">Name:</label>
@@ -43,8 +43,33 @@
                     </div>
                     <div class="form-group">
                     		  <input type="hidden" name="_token" id="csrf" value="{{Session::token()}}">
-                          <label for="filter">Filter:</label>
-                          <input type="text" class="form-control" id="filter" placeholder="Enter Filter" name="filter">
+                          <label for="device_profile_name">Device Profile Name:</label>
+                          <div class="col-md-6">
+                          @if(count($device_profiles) > 0)
+										<select class="form-control" name="device_profile_name" id="device_profile_name">
+												@foreach($device_profiles as $device_profile)
+													<option value="{{$device_profile->name}}">{{$device_profile->name}}</option>
+												@endforeach
+										</select>
+								  @elseif(count($device_profiles) ==0)
+										<p> No device-profiles found. <a href="/addDeviceProfile">Create one</a>.</p>
+								  @endif
+								  </div>
+                    </div>
+                    <div class="form-group">
+                    		  <input type="hidden" name="_token" id="csrf" value="{{Session::token()}}">
+                          <label for="gateway_name">Gateway:</label>
+                          <div class="col-md-6">
+                          @if(count($gateways) > 0)
+										<select class="form-control" name="gateway_name" id="gateway_name">
+												@foreach($gateways as $gateway)
+													<option value="{{$gateway->name}}">{{$gateway->name}}</option>
+												@endforeach
+										</select>
+								  @elseif(count($gateways) ==0)
+										<p> No gateways found. <a href="/addGateway">Create one</a>.</p>
+								  @endif
+								  </div>
                     </div>
 
    					  <button type="submit" class="btn btn-primary" id="butsave">Submit</button>

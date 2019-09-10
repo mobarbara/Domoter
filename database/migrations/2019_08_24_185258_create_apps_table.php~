@@ -17,8 +17,8 @@ class CreateAppsTable extends Migration
             $table->bigIncrements('id');
             $table->string('name');
             $table->text('description');
-            $table->text('filter');
-            $table->integer('gat_id');
+            $table->string('device_profile_name');
+            $table->integer('gateway_name');
             $table->timestamps();
         });
     }

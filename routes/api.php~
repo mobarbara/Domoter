@@ -17,9 +17,9 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('apiRegister', 'Auth\RegisterApiController@register');
-Route::post('apiLogin', 'Auth\LoginApiController@login');
-Route::post('apiLogout', 'Auth\LoginApiController@logout');
+Route::post('api/register', 'Auth\RegisterApiController@register');
+Route::post('api/login', 'Auth\LoginApiController@login');
+Route::post('api/logout', 'Auth\LoginApiController@logout');
 
 Route::group(['middleware' => 'auth:api'], function() {
 	Route::get('gateways', 'GatewayController@index');
@@ -28,4 +28,6 @@ Route::group(['middleware' => 'auth:api'], function() {
 	Route::put('gateways/{gateway}', 'GatewayController@update');
 	Route::delete('gateways/{gateway}', 'GatewayController@delete');	
 });
+
+
 

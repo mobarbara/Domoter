@@ -2,7 +2,7 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -16,9 +16,15 @@
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
 
-    <!-- Styles -->
+ 	 <!-- Bootstrap core CSS -->
+    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    
+    <!-- Custom styles for this template -->
+    <link href="css/simple-sidebar.css" rel="stylesheet">
+    
 </head>
+
 <body>
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
@@ -32,9 +38,6 @@
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
-                    <ul class="navbar-nav mr-auto">
-
-                    </ul>
 
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
@@ -67,29 +70,43 @@
                 </div>
             </div>
         </nav>
-
-        <main class="py-4">
-            <div class="container">
-    				<div class="row justify-content-center">
-        				<div class="col-md-12">
-            			<div class="card">
-                			<div class="card-header"></div>
-
-               			<div class="card-body">	
-                    			@if (session('status'))
-                        		<div class="alert alert-success" role="alert">
-                            		{{ session('status') }}
-                        		</div>
-                    			@endif
-                    			
-                    			<a href="/app">Applications of your Domoter Account</a>
-                   				
-                			</div>
-            			</div>
-        				</div>
-    				</div>
-				</div>
-        </main>
+     <div class="d-flex" id="wrapper">
+     <!-- Sidebar -->
+    	<div class="bg-light border-right" id="sidebar-wrapper">
+      <div class="list-group list-group-flush">
+        @if(Auth::user() -> type == 'admin')
+        <a href="/users" class="list-group-item list-group-item-action bg-light">Users</a>
+        @endif 
+        <a href="/home" class="list-group-item list-group-item-action bg-light">Home</a>
+        <a href="/applications" class="list-group-item list-group-item-action bg-light">Applications</a>
+        <a href="/deviceProfiles" class="list-group-item list-group-item-action bg-light">Device profiles</a>
+        <a href="/gateways" class="list-group-item list-group-item-action bg-light">Gateways</a>
+        <a href="/api" class="list-group-item list-group-item-action bg-light">Cloud</a>
+      </div>
+    	</div>
+    <!-- /#sidebar-wrapper -->
+    <!-- Page Content -->
+    <div id="page-content-wrapper">
+      <div class="container-fluid">
+        <h1 class="mt-4">HOME</h1>
+        <p>Domoter project provides components to build your home automation system to manage domotic devices.</p>
+        <br>
+        <p>Start creating a new <a href="/addGateway">Gateway</a>!</p>
+      </div>
     </div>
+    <!-- /#page-content-wrapper -->    
+     </div>
+    <!-- /#wrapper -->
+     <!-- Bootstrap core JavaScript -->
+  	<script src="vendor/jquery/jquery.min.js"></script>
+  	<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+ 	 <!-- Menu Toggle Script -->
+  	<script>
+    $("#menu-toggle").click(function(e) {
+      e.preventDefault();
+      $("#wrapper").toggleClass("toggled");
+    });
+  	</script>
 </body>
 </html>

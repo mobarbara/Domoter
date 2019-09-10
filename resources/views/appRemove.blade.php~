@@ -17,8 +17,8 @@
                @foreach($app as $a)     
                <div class="container">
                     <p> Are you really sure you want to delete this gateway and its entry in the database? </p>
-                    <a class="btn btn-primary" href="/app"> Go back </a>
-                    <a class="btn btn-primary" href="/app/deleted/{{$app->id}}"> Yes, I am sure </a>
+                    <a class="btn btn-primary" href="/home"> Go back </a>
+                    <a class="btn btn-primary" href="/home/{{$a->id}}"> Yes, I am sure </a>
                </div>
                @endforeach
             </div>

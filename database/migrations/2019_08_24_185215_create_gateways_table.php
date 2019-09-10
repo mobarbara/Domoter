@@ -15,15 +15,14 @@ class CreateGatewaysTable extends Migration
     {
         Schema::create('gateways', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('app_id');
-            $table->text('mqtt_server');
+            $table->string('name');
+            $table->date('last_alive');
+            $table->boolean('online');
+            $table->string('mqtt_server');
             $table->integer('mqtt_port');
-				$table->text('mqtt_username');            
-            $table->text('mqtt_password');
             $table->timestamps();
         });
     }
-
     /**
      * Reverse the migrations.
      *

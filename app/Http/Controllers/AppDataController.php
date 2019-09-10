@@ -1,21 +1,33 @@
 <?php
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use DB;
+use App\DeviceProfile;
+use App\Gateway;
 
 class AppDataController extends Controller
 {
-	 public function index() //shows all apps
+	 public function index() 
 	 {
 	 	  $apps = DB::select('select * from apps');
 		  return view('appIndex', ['apps' => $apps]);
 	 }
+
+	 public function info($name){
+		  $app = DB::select('select * from apps where name = ?', [$name]);
+		  $device_profiles = DB::select('select * from device_profiles');
+	 	  $gateways = DB::select('select * from gateways');
+		  return view('appInfo', ['app' => $app, 'device_profiles' => DeviceProfile::all(), 'gateways' => $gateways]);
+	 }	 
 	 
-	 public function create(){ //when i have to display the view 'create'
-		  return view('appCreate');	 
+	 public function create(){ 
+	 	  $device_profiles = DB::select('select * from device_profiles');
+	 	  $gateways = DB::select('select * from gateways');
+		  return view('appCreate', ['device_profiles' => $device_profiles, 'gateways' => $gateways]);	 
 	 }
 	 
-	 public function remove($id){ //when i have to display the view 'delete' for the gateway with id = $id
+	 public function remove($id){ 
 	 	  $app = DB::select('select * from apps where id = ?', [$id]);
 		  return view ('appRemove', ['app' => $app]);	 
 	 }
@@ -25,38 +37,46 @@ class AppDataController extends Controller
 		  return $no_id; 
 	 }
 	 
-	 public function edit($id){ //when i have to display the view 'edit' for the gateway with id = $id
+	 public function edit($id){
 		  $app = DB::select('select * from apps where id = ?', [$id]);
-		  return view('appEdit', ['app' => $app]);	 
+		  $device_profiles = DB::select('select * from device_profiles');
+		  $gateways = DB::select('select * from gateways');
+		  return view('appEdit', ['app' => $app, 'device_profiles' => $device_profiles, 
+		  'gateways' => $gateways]);	 
 	 }
 	 
-	 public function insert(Request $request){ //when i have to insert a new record in the table 'apps'
+	 public function insert(Request $request){ 
 		  	 $name = $request['name'];  
 		  	 $description = $request['description'];
-		  	 $filter = $request['filter'];
+		  	 $device_profile_name = $request['device_profile_name'];
+		  	 $gateway_name = $request['gateway_name'];
 		  	 $id = AppDataController::getLastInsertedId();
 		  	 $id++;
-		  	 $data = array('id' => $id, 'name' => $name, 'description' => $description, 'filter' => $filter);
+		  	 $data = array('id' => $id, 'name' => $name, 'description' => $description, 
+		  	 'device_profile_name' => $device_profile_name, 'gateway_name' => $gateway_name);
 		  	 DB::table('apps')->insert($data);
 
-			 $url = "/app";
-          echo "Record inserted successfully. Return to <a href=" . $url . ">apps</a>.";  	 
+			 $view = AppDataController::index();
+          echo $view;  	 
 	 }	 
 	 
 	 public function delete(Request $request, $id){
 		  DB::delete('delete from apps where id = ?', [$id]);  
-		  $url = "/app";
-        echo "Record deleted successfully. Return to <a href=" . $url . ">apps</a>."; 	
+		  $view = AppDataController::index();
+        echo $view;
 	 }  
 	 
-	 public function update(Request $request, $id) //when i have to edit a record in the table 'gateways' with id = $id
+	 public function update(Request $request, $id) 
     {
         $name = $request['name'];
 		  $description = $request['description'];
-        $filter = $request['filter'];
-        DB::update('update apps set name = ?, description = ?, filter = ? where id = ?', [$name,$description,$filter,$id]);
-        $url = "/app";
-        echo "Record updated successfully. Return to <a href=" . $url . ">apps</a>."; 
+        $device_profile_name = $request['device_profile_name'];
+        $gateway_name = $request['gateway_name'];
+        DB::update('update apps set name = ?, description = ?, device_profile_name = ?, 
+        gateway_name = ? where id = ?', 
+        [$name,$description,$device_profile_name,$gateway_name,$id]);
+        $view = AppDataController::index();
+		  echo $view; 
     }
     
 }

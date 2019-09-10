@@ -15,9 +15,17 @@
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
+     <!-- Bootstrap core CSS -->
+  		<link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+		<!-- Bootstrap core JavaScript -->
+  		<script src="vendor/jquery/jquery.min.js"></script>
+  		<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  		<!-- Custom styles for this template -->
+  		<link href="css/simple-sidebar.css" rel="stylesheet">
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+
 </head>
 <body>
     <div id="app">
@@ -44,12 +52,8 @@
                         <li class="nav-item">
                            <a class="nav-link" href="/register">{{ __('Register New User') }}</a>
                         </li>
-                     	@endif    
-                     	
-                     	<li class="nav-item">
-                           <a class="nav-link" href="/home">{{ __('Home') }}</a>
-                        </li>               
-                     
+                     	@endif        
+                        
                           <li class="nav-item dropdown">
                               <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->name }} <span class="caret"></span>
@@ -71,56 +75,68 @@
                 </div>
             </div>
         </nav>
+     <div class="d-flex" id="wrapper">
+     <!-- Sidebar -->
+    	<div class="bg-light border-right" id="sidebar-wrapper">
+      <div class="list-group list-group-flush">
+        @if(Auth::user() -> type == 'admin')
+        <a href="/users" class="list-group-item list-group-item-action bg-light">Users</a>
+        @endif 
+        <a href="/home" class="list-group-item list-group-item-action bg-light">Home</a>
+        <a href="/applications" class="list-group-item list-group-item-action bg-light">Applications</a>
+        <a href="/deviceProfiles" class="list-group-item list-group-item-action bg-light">Device profiles</a>
+        <a href="/gateways" class="list-group-item list-group-item-action bg-light">Gateways</a>
+        <a href="/api" class="list-group-item list-group-item-action bg-light">Cloud</a>
+      </div>
+    	</div>
+    <!-- /#sidebar-wrapper -->
+    <!-- Page Content -->
+    <div id="page-content-wrapper">
+      <div class="container-fluid">
+        <h1 class="mt-4">Applications</h1>
+      </div>
+      
+		<div class="form-group row mb-0">
+    		<form method="post" action="{{route('appCreate')}}">
+              <div class="col-md-1 offset-md-1">
+              <button type="submit" class="btn btn-primary">
+                 {{ __(' + Create Application') }}
+              </button>
+              </div>
+         </form>
+      </div>
+       										 
+      <div class="table-responsive">
+      <table class="table"> 
+      <tr>
+      	<th> Name </th> 
+      	<th> Edit </th>
+     	 	<th> Delete </th>
+      </tr>
+      @foreach ($apps as $app)
+      <tr>
+      	<td><a href="/applications/{{$app->name}}/info">{{$app->name}}</a></td>
+      	<td><a href="/applications/edit/{{$app->id}}"><button> Edit App </button></a></td>
+      	<td><a href="/applications/delete/{{$app->id}}"><button> Delete App </button></a></td>
+      </tr>
+      @endforeach                  
+      </table>
+      </div>      
+    </div>
+    <!-- /#page-content-wrapper -->    
+     </div>
+    <!-- /#wrapper -->
+     <!-- Bootstrap core JavaScript -->
+  	<script src="vendor/jquery/jquery.min.js"></script>
+  	<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-        <main class="py-4">
-            <div class="container">
-    				<div class="row justify-content-center">
-        				<div class="col-md-12">
-            			<div class="card">
-                			<div class="card-header">Applications</div>
-
-               			<div class="card-body">	
-                    			@if (session('status'))
-                        		<div class="alert alert-success" role="alert">
-                            		{{ session('status') }}
-                        		</div>
-                    			@endif
-                    
-                   				<div class="table-responsive">
-                        		<table class="table"> 
-                            		<tr>
-                                		<th> Name </th> 
-                                		<th> Description </th>
-                                		<th> Filter </th>
-                                		<th> Edit </th>
-                                		<th> Delete </th>
-                            		</tr>
-                                		@foreach ($apps as $app)
-                                    <tr>
-                                        <td><a href="/app/{{$app->id}}/gateway">{{$app->name}}</a></td>
-                                        <td>{{$app->description}}</td>
-                                        <td>{{$app->filter}}</td>
-                                        <td><a href="/app/edit/{{$app->id}}"> <button>Edit App </button></a></td>
-                                        <td><a href="/app/delete/{{$app->id}}"><button> Delete App </button></a></td>
-                                    </tr>
-                                		@endforeach                  
-                        		</table>
-                    			</div>
-                			</div>
-            			</div>
-        				</div>
-    				</div>
-    			   <div class="form-group row mb-0">
-    			   <form method="post" action="{{route('appCreate')}}">
-                   <div class="col-md-5 offset-md-0">
-                        <button type="submit" class="btn btn-primary">
-                            	{{ __('Register a new app') }}
-                        </button>
-                   </div>
-               </form>
-               </div>
-				</div>
-        </main>
+ 	 <!-- Menu Toggle Script -->
+  	<script>
+    $("#menu-toggle").click(function(e) {
+      e.preventDefault();
+      $("#wrapper").toggleClass("toggled");
+    });
+  	</script>		  
     </div>
 </body>
 </html>
